@@ -6,14 +6,81 @@
 //
 
 import UIKit
+import RealmSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        //変更したほうがエラー出にくいかも...
+        let config = Realm.Configuration(schemaVersion: 0,migrationBlock: { miragration, oldSchemaVersion in
+            if(oldSchemaVersion < 1) {
+                                            
+            }
+    })
+        
+
+        Realm.Configuration.defaultConfiguration = config
+        Realm.Configuration.defaultConfiguration = Realm.Configuration(
+          schemaVersion: 4,
+          migrationBlock: { migration, oldSchemaVersion in
+            migration.enumerateObjects(ofType: Memo.className()) { oldObject, newObject in
+              if oldSchemaVersion < 3 {
+                newObject!["gazou"] = ""
+              }
+            }
+            migration.enumerateObjects(ofType: Memo.className()) { oldObject, newObject in
+              if oldSchemaVersion < 4 {
+                newObject!["imi"] = ""
+              }
+            }
+
+            migration.enumerateObjects(ofType: Memo.className()) { oldObject, newObject in
+              if oldSchemaVersion < 4 {
+                newObject!["tango"] = ""
+              }
+            }
+
+          })
+        
+        
+        let realm = try! Realm()
+        
+        //try! realm.write {
+            //realm.deleteAll()
+       //}
+        
+        if realm.objects(Memo.self).count == 0 {
+        let newMemo = Memo()
+                    newMemo.tango = "apple"
+                    newMemo.imi = "りんご"
+        var documentDirectoryFileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let filePath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+        if documentDirectoryFileURL != nil {
+        // ディレクトリのパスにファイル名をつなげてファイルのフルパスを作る
+                        let path = documentDirectoryFileURL.appendingPathComponent("apple.png")
+                        documentDirectoryFileURL = path
+                    }
+        //pngで保存する場合
+                    let pngImageData = UIImage(named: "apple.png")?.pngData()
+        do {
+        try pngImageData!.write(to: documentDirectoryFileURL)
+                    } catch {
+        //エラー処理
+                        print("エラー")
+                    }
+        do{
+        try newMemo.gazou = documentDirectoryFileURL.absoluteString
+                    } catch {
+        print("画像の保存に失敗しました")
+                    }
+        try! realm.write {
+                        realm.add(newMemo)
+                    }
+                }
+
         return true
     }
 
@@ -33,4 +100,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 }
+
 
