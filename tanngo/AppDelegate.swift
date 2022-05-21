@@ -48,9 +48,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let realm = try! Realm()
         
-        //try! realm.write {
-            //realm.deleteAll()
-       //}
+//        try! realm.write {
+//            realm.deleteAll()
+//       }
         
         if realm.objects(Memo.self).count == 0 {
         let newMemo = Memo()
@@ -60,17 +60,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let filePath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
         if documentDirectoryFileURL != nil {
         // ディレクトリのパスにファイル名をつなげてファイルのフルパスを作る
-                        let path = documentDirectoryFileURL.appendingPathComponent("apple.png")
-                        documentDirectoryFileURL = path
-                    }
+            let path = documentDirectoryFileURL.appendingPathComponent("apple.png")
+            documentDirectoryFileURL = path
+        }
         //pngで保存する場合
-                    let pngImageData = UIImage(named: "apple.png")?.pngData()
+        let pngImageData = UIImage(named: "apple.png")?.pngData()
         do {
         try pngImageData!.write(to: documentDirectoryFileURL)
-                    } catch {
+        } catch {
         //エラー処理
-                        print("エラー")
-                    }
+        print("エラー")
+        }
         do{
         try newMemo.gazou = documentDirectoryFileURL.absoluteString
                     } catch {

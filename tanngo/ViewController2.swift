@@ -36,7 +36,16 @@ class ViewController2: UIViewController {
                 let fileURL = URL(string: memo[a].gazou)
                 //パス型に変換
                 let filePath = fileURL?.path
-                showImageView.image = UIImage(contentsOfFile: filePath!)
+                
+                // 追加
+                if a == 0 {
+                    print(a)
+                    showImageView.image = UIImage(named: "apple.png")
+                } else {
+                    showImageView.image = UIImage(contentsOfFile: filePath!)
+                }
+                
+                
             } else {
                 showImageView.image = UIImage(named: "noimage.jpeg")
             }
@@ -86,7 +95,16 @@ class ViewController2: UIViewController {
                 let fileURL = URL(string: memo[a].gazou)
                 //パス型に変換
                 let filePath = fileURL?.path
-                showImageView.image = UIImage(contentsOfFile: filePath!)
+                
+                // 追加
+                if a == 0 {
+                    print(a)
+                    showImageView.image = UIImage(named: "apple.png")
+                } else {
+                    showImageView.image = UIImage(contentsOfFile: filePath!)
+                }
+                
+                
             } else {
                 showImageView.image = UIImage(named: "noimage.jpeg")
             }
